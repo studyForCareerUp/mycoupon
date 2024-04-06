@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: mycoupon-api
+server:
+  port: 8080
