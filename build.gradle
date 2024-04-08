@@ -34,6 +34,18 @@ subprojects {
 
     // 관리하는 모듈에 공통 dependencies
     dependencies {
+        /** 새로 추가 **/
+        implementation "org.springframework.boot:spring-boot-starter-data-jpa" // jpa 를 사용하기 위해서
+        implementation "org.springframework.boot:spring-boot-starter-data-redis" // redis 사용을 위해서
+
+        runtimeOnly "com.h2database:h2" // h2db 사용을 위해서
+        runtimeOnly "com.mysql:mysql-connector-j" // mysql driver 를 사용하기 위해서
+
+
+        implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta" // querydsl 사용을 위해
+        annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta" // querydsl 사용을 위해
+        /**  // 새로 추가 **/
+
         implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         compileOnly "org.projectlombok:lombok"
