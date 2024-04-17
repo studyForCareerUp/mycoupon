@@ -2,7 +2,6 @@ package com.example.mycouponcore.service;
 
 
 import com.example.mycouponcore.exception.CouponIssueException;
-import com.example.mycouponcore.exception.ErrorCode;
 import com.example.mycouponcore.model.Coupon;
 import com.example.mycouponcore.model.CouponIssue;
 import com.example.mycouponcore.repository.mysql.CouponIssueJpaRepository;
@@ -11,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.mycouponcore.exception.ErrorCode.*;
+import static com.example.mycouponcore.exception.ErrorCode.COUPON_NOT_EXIST;
+import static com.example.mycouponcore.exception.ErrorCode.DUPLICATED_COUPON_ISSUE;
 
 @Service
 @RequiredArgsConstructor
