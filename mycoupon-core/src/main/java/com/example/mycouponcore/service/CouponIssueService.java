@@ -23,10 +23,58 @@ public class CouponIssueService {
     @Transactional
     public void issue(long couponId, long userId) {
 
+//        synchronized (this) {
+//            Coupon coupon = findCoupon(couponId);
+//            coupon.issue();
+//            saveCouponIssue(couponId, userId);
+//        }
+
         Coupon coupon = findCoupon(couponId);
         coupon.issue();
         saveCouponIssue(couponId, userId);
     }
+
+     /*
+    트랜잭션 시작
+    2번 요청
+
+    lock 획득
+    Coupon coupon = findCoupon(couponId); <---- 여기서 문제 발생!!!!
+    coupon.issue();
+    saveCouponIssue(couponId, userId);
+    lock 반납
+
+    1번 요청
+
+    트랜잭션 커밋
+
+    아직 1번 요청이 커밋이 되지 않았는데, 2번요청이 findCoupon(couponId); 실행하여 아직 커밋되기 전에 데이터를 조회하여 프로세스를 진행한다.
+    트랜잭션 내부에서 lock을 여는 행위는 주의해야 함!!!!!!!
+
+
+     */
+
+    /*
+    lock 획득
+
+    트랜잭션 시작
+
+    Coupon coupon = findCoupon(couponId);
+    coupon.issue();
+    saveCouponIssue(couponId, userId);
+
+
+    1번 요청
+
+    트랜잭션 커밋
+
+    lock 반납
+
+    이렇게 바꿔어야 문제 해결
+
+
+
+     */
 
     public Coupon findCoupon(long couponId) {
         return couponJpaRepository
