@@ -22,14 +22,20 @@ public class CouponIssueService {
 
     @Transactional
     public void issue(long couponId, long userId) {
+        /** 기본 **/
+//        Coupon coupon = findCoupon(couponId);
+//        coupon.issue();
+//        saveCouponIssue(couponId, userId);
 
+        /** synchronized 키워드 사용 **/
 //        synchronized (this) {
 //            Coupon coupon = findCoupon(couponId);
 //            coupon.issue();
 //            saveCouponIssue(couponId, userId);
 //        }
 
-        Coupon coupon = findCoupon(couponId);
+        /** mysql lock 사용 **/
+        Coupon coupon = findCouponWithLock(couponId);
         coupon.issue();
         saveCouponIssue(couponId, userId);
     }
@@ -79,6 +85,16 @@ public class CouponIssueService {
     public Coupon findCoupon(long couponId) {
         return couponJpaRepository
                 .findById(couponId)
+                .orElseThrow(() -> {
+                    throw new CouponIssueException(COUPON_NOT_EXIST, "쿠폰이 존재하지 않습니다. %s".formatted(couponId));
+                });
+
+
+    }
+
+    public Coupon findCouponWithLock(long couponId) {
+        return couponJpaRepository
+                .findCouponWithLock(couponId)
                 .orElseThrow(() -> {
                     throw new CouponIssueException(COUPON_NOT_EXIST, "쿠폰이 존재하지 않습니다. %s".formatted(couponId));
                 });
